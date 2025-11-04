@@ -16,23 +16,35 @@ class _CustomerBottomNavState extends State<CustomerBottomNav> {
   final List<IconData> _icons = [
     Icons.home,
     Icons.favorite,
-    Icons.shopping_cart,
+    Icons.shopping_cart, // Index 2: Giỏ hàng
     Icons.person,
   ];
 
   @override
   void initState() {
     super.initState();
+    // ✅ QUAN TRỌNG: Gán currentIndex bằng initialIndex từ ShellRoute
     currentIndex = widget.initialIndex;
+  }
+
+  // ✅ Thêm didUpdateWidget để đảm bảo cập nhật khi ShellRoute gửi index mới
+  @override
+  void didUpdateWidget(covariant CustomerBottomNav oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialIndex != oldWidget.initialIndex) {
+      setState(() {
+        currentIndex = widget.initialIndex;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration( // Cần const nếu style cố định
         color: Colors.white,
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -1))
         ],
       ),
@@ -42,9 +54,8 @@ class _CustomerBottomNavState extends State<CustomerBottomNav> {
           final isSelected = currentIndex == index;
           return GestureDetector(
             onTap: () {
-              setState(() {
-                currentIndex = index;
-              });
+              // KHÔNG CẦN setState ở đây vì ShellRoute sẽ tự rebuild
+              // Ta chỉ cần gọi hàm điều hướng
               _onItemTapped(context, index);
             },
             child: AnimatedContainer(
@@ -76,16 +87,18 @@ class _CustomerBottomNavState extends State<CustomerBottomNav> {
 
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
-      case 0:
+      case 0: // Trang chủ
         context.go(AppRoutes.home);
         break;
-      case 1:
+      case 1: // Trái tim (Yêu thích)
+      // ✅ Index 1 chỉ dẫn đến Favourites
+        context.go(AppRoutes.favourites);
+        break;
+      case 2: // Giỏ hàng/Sản phẩm (Index 2)
+      // ✅ Cập nhật logic để index 2 dẫn đến Products/Cart
         context.go(AppRoutes.products);
         break;
-      case 2:
-        context.go(AppRoutes.favourites); // bạn có thể đổi thành favourites nếu có route đó
-        break;
-      case 3:
+      case 3: // Cá nhân
         context.go(AppRoutes.profile);
         break;
     }

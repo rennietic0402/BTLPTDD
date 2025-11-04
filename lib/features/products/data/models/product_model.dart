@@ -12,26 +12,31 @@ class ProductModel extends Product {
     required String imageUrl,
     required String description,
   }) : super(
-         id: id,
-         name: name,
-         brand: brand,
-         price: price,
-         oldPrice: oldPrice,
-         discount: discount,
-         imageUrl: imageUrl,
-         description: description,
-       );
+    id: id,
+    name: name,
+    brand: brand,
+    price: price,
+    oldPrice: oldPrice,
+    discount: discount,
+    imageUrl: imageUrl,
+    description: description,
+  );
+
   factory ProductModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    if (data == null) {
+      throw Exception("Product data is null for document ${doc.id}");
+    }
+    // ✅ FIX: Chuyển đổi dữ liệu số (int hoặc double) từ Firestore sang double (as num).toDouble()
     return ProductModel(
       id: doc.id,
-      name: data['name'],
-      brand: data['brand'],
-      price: data['price'],
-      oldPrice: data['oldPrice'],
-      discount: data['discount'],
-      imageUrl: data['imageUrl'],
-      description: data['description'],
+      name: data['name'] as String? ?? '', // Xử lý null
+      brand: data['brand'] as String? ?? '', // Xử lý null
+      price: (data['price'] as num? ?? 0.0).toDouble(), // Xử lý num? và null
+      oldPrice: (data['oldPrice'] as num? ?? 0.0).toDouble(), // Xử lý num? và null
+      discount: (data['discount'] as num? ?? 0.0).toDouble(), // Xử lý num? và null
+      imageUrl: data['imageUrl'] as String? ?? '', // Xử lý null
+      description: data['description'] as String? ?? '', // Xử lý null
     );
   }
 
