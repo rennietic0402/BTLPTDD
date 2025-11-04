@@ -4,18 +4,25 @@ import 'package:btludptdd/features/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/home/home_page.dart';
-import '../widgets/bottom_nav_bar.dart';
-import '../../features/favourites/favourites_page.dart';
-// ✅ Đổi đường dẫn import nếu cần, ví dụ:
-import '../../features/products/presentation/pages/product_detail_page.dart';
-import 'package:btludptdd/features/products/presentation/pages/product_detail_page.dart';
-import 'app_routes.dart';
+import '../widgets/bottom_nav_bar.dart'; // 👈 nhớ import đúng file
+import 'package:btludptdd/core/routing/app_routes.dart';
+import '/features/auth/presentation/pages/login_page.dart';
+import '/features/auth/presentation/pages/signup_page.dart';
 
 class AppGoRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.home, // Sử dụng AppRoutes.home
+    // initialLocation: '/', // 👉 chạy thẳng vào Home
+    initialLocation: AppRoutes.login,
     debugLogDiagnostics: true,
     routes: [
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.signup,
+        builder: (context, state) => const SignupPage(),
+      ),
       ShellRoute(
         navigatorKey: GlobalKey<NavigatorState>(),
         builder: (context, state, child) {
