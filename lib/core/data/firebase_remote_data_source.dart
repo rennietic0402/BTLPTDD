@@ -60,7 +60,10 @@ class FirebaseRemoteDS<T> {
     String docID = await getDocId(id);
     await _collection.doc(docID).delete();
   }
-
+  Future<void> addDocWithId(String id, T item) async {
+    // Đảm bảo item được chuyển đổi thành Map đúng cách
+    await _collection.doc(id).set(toFirestore(item));
+  }
   Stream<List<T>> watchAll() {
     final Stream<QuerySnapshot> stream = (orderByField != null)
         ? _collection
@@ -72,8 +75,9 @@ class FirebaseRemoteDS<T> {
     );
   }
 
-  String? getUserId() {
+  static String? getUserId() {
     final user = FirebaseAuth.instance.currentUser;
     return user?.uid;
   }
+
 }
