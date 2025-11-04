@@ -1,13 +1,14 @@
 // lib/core/routing/app_go_router.dart
 
+import 'package:btludptdd/features/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/home/home_page.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../../features/favourites/favourites_page.dart';
 // ✅ Đổi đường dẫn import nếu cần, ví dụ:
-//import '../../features/products/presentation/pages/product_detail_page.dart';
 import '../../features/products/presentation/pages/product_detail_page.dart';
+import 'package:btludptdd/features/products/presentation/pages/product_detail_page.dart';
 import 'app_routes.dart';
 
 class AppGoRouter {
@@ -48,7 +49,7 @@ class AppGoRouter {
           // ROUTE 3: PROFILE
           GoRoute(
             path: AppRoutes.profile,
-            builder: (context, state) => const Center(child: Text("Profile Page")),
+            builder: (context, state) => const ProfilePage(),
           ),
 
           // ✅ ROUTE CHI TIẾT SẢN PHẨM (Mở ngoài Shell)
