@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/home/home_page.dart';
 import '../widgets/bottom_nav_bar.dart'; // 👈 nhớ import đúng file
+import 'app_routes.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/signup_page.dart';
+import '../../features/favourites/favourites_page.dart';
+import '../../features/products/presentation/pages/product_detail_page.dart';
 
 class AppGoRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/', // 👉 chạy thẳng vào Home
+    // initialLocation: '/', // 👉 chạy thẳng vào Home
+    initialLocation: AppRoutes.login,
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
