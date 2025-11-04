@@ -1,39 +1,84 @@
+// lib/core/routing/app_go_router.dart
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/home/home_page.dart';
-import '../widgets/bottom_nav_bar.dart';// 👈 nhớ import đúng file
+import '../widgets/bottom_nav_bar.dart';
+import '../../features/favourites/favourites_page.dart';
+// ✅ Đổi đường dẫn import nếu cần, ví dụ:
+//import '../../features/products/presentation/pages/product_detail_page.dart';
+import '../../features/products/presentation/pages/product_detail_page.dart';
+import 'app_routes.dart';
 
 class AppGoRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/', // 👉 chạy thẳng vào Home
+    initialLocation: AppRoutes.home, // Sử dụng AppRoutes.home
     debugLogDiagnostics: true,
     routes: [
       ShellRoute(
+        navigatorKey: GlobalKey<NavigatorState>(),
         builder: (context, state, child) {
-          int currentIndex = _getIndexForLocation(state.matchedLocation);
+          final location = state.matchedLocation; // Lấy đường dẫn khớp
+          int currentIndex = _getIndexForLocation(location);
+
           return Scaffold(
             body: child,
-            bottomNavigationBar: CustomerBottomNav(initialIndex: currentIndex),
+            // Ẩn Bottom Nav khi ở route chi tiết
+            bottomNavigationBar: _shouldShowBottomNav(location)
+                ? CustomerBottomNav(initialIndex: currentIndex)
+                : null,
           );
         },
         routes: [
+          // ROUTE 0: HOME
           GoRoute(
-            path: '/',
+            path: AppRoutes.home,
             builder: (context, state) => const HomePage(),
           ),
-          // 👇 sau này bạn có thể thêm các trang khác ở đây
-          // GoRoute(
-          //   path: '/profile',
-          //   builder: (context, state) => const ProfilePage(),
-          // ),
+          // ROUTE 1: FAVOURITES
+          GoRoute(
+            path: AppRoutes.favourites,
+            builder: (context, state) => const FavouritesPage(),
+          ),
+          // ROUTE 2: PRODUCTS (Ví dụ: Giỏ hàng)
+          GoRoute(
+            path: AppRoutes.products,
+            builder: (context, state) => const Center(child: Text("Cart Page")),
+          ),
+          // ROUTE 3: PROFILE
+          GoRoute(
+            path: AppRoutes.profile,
+            builder: (context, state) => const Center(child: Text("Profile Page")),
+          ),
+
+          // ✅ ROUTE CHI TIẾT SẢN PHẨM (Mở ngoài Shell)
+          GoRoute(
+            path: AppRoutes.productDetail, // Phải là '/product/:id'
+            builder: (context, state) {
+              final productId = state.pathParameters['id']!;
+              return ProductDetailPage(productId: productId);
+            },
+          ),
         ],
       ),
     ],
   );
 
+  // ✅ LOGIC TÍNH TOÁN INDEX CHO BOTTOM NAV
   static int _getIndexForLocation(String path) {
-    if (path.startsWith('/')) return 0;
-    // if (path.startsWith('/profile')) return 1;
+    if (path.startsWith(AppRoutes.favourites)) return 1;
+    if (path.startsWith(AppRoutes.products)) return 2;
+    if (path.startsWith(AppRoutes.profile)) return 3;
+    if (path == AppRoutes.home) return 0;
     return 0;
+  }
+
+  // ✅ LOGIC ẨN/HIỆN BOTTOM NAV (Kiểm tra nếu path bắt đầu bằng /product)
+  static bool _shouldShowBottomNav(String path) {
+    // Nếu AppRoutes.productDetail = '/product/:id', ta chỉ cần kiểm tra '/product'
+    const productDetailBase = '/product';
+
+    // Trả về false (ẨN NAV) nếu đường dẫn bắt đầu bằng '/product'
+    return !path.startsWith(productDetailBase);
   }
 }

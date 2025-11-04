@@ -1,3 +1,5 @@
+// lib/core/routing/app_routes.dart
+
 class AppRoutes {
   static const String home = '/';
   static const String products = '/products';
@@ -7,4 +9,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String login = '/login';
   static const String signup = '/signup';
+
+  // ✅ ROUTE CHI TIẾT SẢN PHẨM (Dùng tham số động :id)
+  static const String productDetail = '/product/:id';
 }

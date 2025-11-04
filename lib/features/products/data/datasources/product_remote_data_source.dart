@@ -31,6 +31,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   Future<List<ProductModel>> getAll() async {
     List<ProductModel> products = [];
     products = await _remoteSource.getAll();
+    print('✅ Loaded ${products.length} products successfully.'); // Kiểm tra số lượng
     return products;
   }
 
