@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "467140315243",
+    "project_id": "fl-firebase-bfb22",
+    "storage_bucket": "fl-firebase-bfb22.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467140315243:android:94347054b06b8f935c892e",
+        "android_client_info": {
+          "package_name": "com.example.btludptdd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8USPzFwfy7QlATpUKn41TUDT2D5SR-YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467140315243:android:1356094f0b03c2ce5c892e",
+        "android_client_info": {
+          "package_name": "com.example.nguyenthithanhthanh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8USPzFwfy7QlATpUKn41TUDT2D5SR-YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467140315243:android:280db54db6083ef45c892e",
+        "android_client_info": {
+          "package_name": "com.example.nguyenthithanhthanh_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8USPzFwfy7QlATpUKn41TUDT2D5SR-YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467140315243:android:4ad74bbc25954ff55c892e",
+        "android_client_info": {
+          "package_name": "com.example.ontap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8USPzFwfy7QlATpUKn41TUDT2D5SR-YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467140315243:android:1243dd05513060dd5c892e",
+        "android_client_info": {
+          "package_name": "com.example.student_manager_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8USPzFwfy7QlATpUKn41TUDT2D5SR-YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
