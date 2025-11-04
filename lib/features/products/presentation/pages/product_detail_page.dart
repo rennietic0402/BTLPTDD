@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import 'package:btludptdd/features/products/data/repositories/product_repository
 import 'package:btludptdd/features/products/domain/usecases/get_product_by_id.dart';
 import 'package:btludptdd/features/products/domain/usecases/get_filtered_products.dart';
 import 'package:btludptdd/core/providers/favorite_provider.dart';
-
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -73,9 +71,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, color: Colors.red, size: 40),
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 40,
+                    ),
                     const SizedBox(height: 10),
-                    Text('Lỗi tải dữ liệu: ${snapshot.error}', textAlign: TextAlign.center),
+                    Text(
+                      'Lỗi tải dữ liệu: ${snapshot.error}',
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
@@ -97,8 +102,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 elevation: 0,
                 // ✅ TIÊU ĐỀ TĨNH: "Sản Phẩm"
                 title: const Text(
-                    "Sản Phẩm",
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)
+                  "Sản Phẩm",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
                 centerTitle: true,
                 flexibleSpace: FlexibleSpaceBar(
@@ -117,9 +126,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             child: Image.asset(
                               "assets/images/${product.imageUrl}",
                               fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) => const Center(
-                                child: Icon(Icons.image_not_supported, size: 80, color: Colors.grey),
-                              ),
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Center(
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      size: 80,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                             ),
                           ),
                         ),
@@ -130,12 +144,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         top: MediaQuery.of(context).padding.top + 8,
                         left: 16,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.redAccent,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: Text('-${product.discount.toInt()}%', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          child: Text(
+                            '-${product.discount.toInt()}%',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                       // Nút trái tim ở trang chi tiết
@@ -165,80 +188,155 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
               ),
               SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Tên sản phẩm
-                          Text(product.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          // Star Rating
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: Colors.amber, size: 18),
-                              const Icon(Icons.star, color: Colors.amber, size: 18),
-                              const Icon(Icons.star, color: Colors.amber, size: 18),
-                              const Icon(Icons.star, color: Colors.amber, size: 18),
-                              const Icon(Icons.star_half, color: Colors.amber, size: 18),
-                              const SizedBox(width: 8),
-                              const Text('56,890', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                            ],
+                delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Tên sản phẩm
+                        Text(
+                          product.name,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 16),
-                          // Giá
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            textBaseline: TextBaseline.alphabetic,
-                            children: [
-                              Text('${product.price.toInt()}đ', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.pinkAccent.shade700)),
-                              const SizedBox(width: 10),
-                              Text('${product.oldPrice.toInt()}đ', style: const TextStyle(fontSize: 18, color: Colors.grey, decoration: TextDecoration.lineThrough)),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          // Chi tiết sản phẩm
-                          const Text("Chi tiết sản phẩm", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          Text(product.description, style: const TextStyle(fontSize: 14, height: 1.5)),
-                          const SizedBox(height: 24),
-
-                          // Phân loại (có thể chọn)
-                          const Text("Phân loại", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: _variants.map((variant) => GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedVariant = variant;
-                                });
-                              },
-                              child: _buildCategoryButton(variant, _selectedVariant == variant),
-                            )).toList(),
-                          ),
-                          const SizedBox(height: 40),
-
-                          // Có thể bạn sẽ thích (Sản phẩm cùng hãng)
-                          const Text("Có thể bạn sẽ thích", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: relatedProducts.length,
-                              itemBuilder: (context, index) {
-                                final relatedP = relatedProducts[index];
-                                return _buildRelatedProductCard(relatedP, favoriteProvider);
-                              },
+                        ),
+                        const SizedBox(height: 8),
+                        // Star Rating
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
                             ),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              '56,890',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // Giá
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '${product.price.toInt()}đ',
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.pinkAccent.shade700,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              '${product.oldPrice.toInt()}đ',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // Chi tiết sản phẩm
+                        const Text(
+                          "Chi tiết sản phẩm",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          product.description,
+                          style: const TextStyle(fontSize: 14, height: 1.5),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Phân loại (có thể chọn)
+                        const Text(
+                          "Phân loại",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: _variants
+                              .map(
+                                (variant) => GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedVariant = variant;
+                                    });
+                                  },
+                                  child: _buildCategoryButton(
+                                    variant,
+                                    _selectedVariant == variant,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        const SizedBox(height: 40),
+
+                        // Có thể bạn sẽ thích (Sản phẩm cùng hãng)
+                        const Text(
+                          "Có thể bạn sẽ thích",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          height: 250,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: relatedProducts.length,
+                            itemBuilder: (context, index) {
+                              final relatedP = relatedProducts[index];
+                              return _buildRelatedProductCard(
+                                relatedP,
+                                favoriteProvider,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ]),
               ),
             ],
           );
@@ -250,7 +348,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 5, offset: const Offset(0, -2))
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 5,
+              offset: const Offset(0, -2),
+            ),
           ],
         ),
         child: Row(
@@ -263,9 +365,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   foregroundColor: Colors.pinkAccent,
                   side: const BorderSide(color: Colors.pinkAccent),
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-                child: const Text('Thêm vào giỏ', style: TextStyle(fontSize: 16)),
+                child: const Text(
+                  'Thêm vào giỏ',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -276,7 +383,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   backgroundColor: Colors.pinkAccent,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 child: const Text('Mua ngay', style: TextStyle(fontSize: 16)),
               ),
@@ -300,13 +409,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             color: isSelected ? Colors.pinkAccent : Colors.grey.shade300,
           ),
         ),
-        child: Text(text, style: TextStyle(color: isSelected ? Colors.pinkAccent : Colors.black87)),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.pinkAccent : Colors.black87,
+          ),
+        ),
       ),
     );
   }
 
   // Widget dựng card sản phẩm gợi ý
-  Widget _buildRelatedProductCard(Product product, FavoriteProvider favoriteProvider) {
+  Widget _buildRelatedProductCard(
+    Product product,
+    FavoriteProvider favoriteProvider,
+  ) {
     final isFav = favoriteProvider.isFavorite(product.id);
     return GestureDetector(
       onTap: () {
@@ -332,16 +449,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
                       "assets/images/${product.imageUrl}",
                       fit: BoxFit.cover,
                       width: double.infinity,
-                      errorBuilder: (context, error, stackTrace) => const Center(
-                        child: Icon(Icons.image_not_supported, color: Colors.grey, size: 40),
-                      ),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Center(
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                              size: 40,
+                            ),
+                          ),
                     ),
                   ),
                 ),
@@ -350,9 +474,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   top: 8,
                   left: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(8)),
-                    child: Text("-${product.discount.toInt()}%", style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      "-${product.discount.toInt()}%",
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
                   ),
                 ),
                 // Favorite button
@@ -377,11 +510,37 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.brand, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
-                  Text(product.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12)),
+                  Text(
+                    product.brand,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.pinkAccent,
+                    ),
+                  ),
+                  Text(
+                    product.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                   const SizedBox(height: 4),
-                  Text("${product.price.toInt()}đ", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 13)),
-                  Text("${product.oldPrice.toInt()}đ", style: const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 11)),
+                  Text(
+                    "${product.price.toInt()}đ",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "${product.oldPrice.toInt()}đ",
+                    style: const TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey,
+                      fontSize: 11,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -391,4 +550,3 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 }
->>>>>>>>> Temporary merge branch 2
